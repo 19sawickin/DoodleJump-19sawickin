@@ -14,6 +14,8 @@ public class Doodle {
         this.setupShape();
         doodlePane.getChildren().add(_doodle);
         doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
+        doodlePane.setFocusTraversable(true);
+        doodlePane.requestFocus();
 
     }
 
@@ -40,6 +42,7 @@ public class Doodle {
                 default:
                     break;
             }
+            e.consume();
 
         }
 

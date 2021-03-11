@@ -28,7 +28,7 @@ public class Constants {
     public static final int DOODLE_HEIGHT = 40; // (UNITS: pixels)
 
     public static final int SCENE_WIDTH = 300;
-    public static final int SCENE_HEIGHT = 500;
+    public static final int SCENE_HEIGHT = 400;
 
     public static final int DOODLE_X_LOC = 100;
     public static final int DOODLE_Y_LOC = 100;
