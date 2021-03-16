@@ -6,23 +6,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 public class PaneOrganizer {
-    private BorderPane _root;
     private HBox _bottomPane;
+    private BorderPane _root;
 
     public PaneOrganizer() {
         _root = new BorderPane();
-        _bottomPane = new HBox();
         Pane doodlePane = new Pane();
-        new Doodle(doodlePane);
-        _root.setCenter(doodlePane);
+        _bottomPane = new HBox();
         this.addButton();
-        _root.setBottom(_bottomPane);
-       // _root.setFocusTraversable(false);
+        new Game(_root, _bottomPane, doodlePane);
 
-    }
-
-    public Pane getRoot() {
-        return _root;
     }
 
     public void addButton() {
@@ -33,12 +26,17 @@ public class PaneOrganizer {
         b1.setFocusTraversable(false); // IS THIS RIGHT??
     }
 
+    public BorderPane getRoot() {
+        return _root;
+    }
+
     private class QuitHandler implements EventHandler<ActionEvent> {
 
         public void handle(ActionEvent event) {
             System.exit(0);
         }
     }
+
 }
 
 /**

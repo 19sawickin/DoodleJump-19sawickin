@@ -1,22 +1,16 @@
 package doodlejump;
 
-import javafx.event.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 
 public class Doodle {
-    private Rectangle _doodle;
+    private static Rectangle _doodle;
 
     public Doodle(Pane doodlePane) {
         this.setupShape();
         doodlePane.getChildren().add(_doodle);
-        doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
-        doodlePane.setFocusTraversable(true);
-        doodlePane.requestFocus();
-
     }
 
     public void setupShape() {
@@ -26,25 +20,10 @@ public class Doodle {
         _doodle.setY(Constants.DOODLE_Y_LOC);
     }
 
-    private class KeyHandler implements EventHandler<KeyEvent> {
-        private double _distance;
-
-        public void handle(KeyEvent e) {
-            _distance = Constants.DOODLE_DISTANCE;
-            switch(e.getCode()) {
-                case KP_LEFT:
-                    _distance *= -1;
-                    _doodle.setX(_doodle.getX() + _distance);
-                    break;
-                case KP_RIGHT:
-                    _doodle.setX(_doodle.getX() + _distance);
-                    break;
-                default:
-                    break;
-            }
-            e.consume();
-
-        }
-
+    public static double getX() {
+        return _doodle.getX();
+    }
+    public static void setX(double x_val) {
+        _doodle.setX(x_val);
     }
 }
