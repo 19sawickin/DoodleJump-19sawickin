@@ -1,6 +1,5 @@
 package doodlejump;
 
-import cartoon.Cartoon;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -28,7 +27,7 @@ public class Game {
 
     public void setupTimeline() {
         Timeline timeline = new Timeline
-                (new KeyFrame(Duration.seconds(0.1), new MoveHandler()));
+                (new KeyFrame(Duration.seconds(Constants.DURATION), new MoveHandler()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
@@ -52,13 +51,35 @@ public class Game {
             }
             e.consume();
         }
-
     }
 
     private class MoveHandler implements EventHandler<ActionEvent> {
+        private double _c_vel = 0;
+        private double _new_vel = 0;
+        private double _c_pos;
+        private double _new_pos = 0;
+        private double _difference = 0;
 
-        public void handle(ActionEvent e) {
+        public void handle(ActionEvent kF) {
+            _c_pos = Doodle.getY();
+            _new_vel = _c_vel + Constants.GRAVITY * Constants.DURATION;
+            _new_pos = _c_pos + _new_vel * Constants.DURATION;
 
+            if(_new_pos > Constants.SCENE_HEIGHT/2) {
+                Doodle.setY(_c_pos + _new_vel * Constants.DURATION);
+                _c_vel = _new_vel; //this screws things up
+            } else {
+                _difference = Constants.SCENE_HEIGHT/2 - Doodle.getY();
+                //move platforms down by difference
+                //remove off-screen platforms
+                //generate new platforms
+                Doodle.setY(Constants.SCENE_HEIGHT/2);
+            }
+
+            if(_c_pos>=0 && _doodle.intersects(Constants.PLATFORM_X, Constants.PLATFORM_Y,
+                    Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
+                _c_vel = Constants.REBOUND_VELOCITY;
+            }
         }
     }
 }

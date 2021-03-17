@@ -16,14 +16,23 @@ public class Doodle {
     public void setupShape() {
         _doodle = new Rectangle(Constants.DOODLE_WIDTH, Constants.DOODLE_HEIGHT);
         _doodle.setFill(Color.BLUE);
-        _doodle.setX(Constants.DOODLE_X_LOC);
+        _doodle.setX(Constants.SCENE_WIDTH/2);
         _doodle.setY(Constants.DOODLE_Y_LOC);
     }
 
     public static double getX() {
         return _doodle.getX();
     }
+
+    public static double getY() {
+        return _doodle.getY();
+    }
+
     public static void setX(double x_val) {
         _doodle.setX(x_val);
+    }
+
+    public static void setY(double y_val) {
+        _doodle.setY(y_val);
     }
 }

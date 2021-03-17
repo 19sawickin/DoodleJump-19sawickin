@@ -16,7 +16,7 @@ public class Platform {
     public void setupShape() {
         _platform = new Rectangle(Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT);
         _platform.setFill(Color.GREEN);
-        _platform.setX(Constants.SCENE_WIDTH/2);
-        _platform.setY(Constants.SCENE_HEIGHT-Constants.PLATFORM_HEIGHT);
+        _platform.setX(Constants.PLATFORM_X);
+        _platform.setY(Constants.PLATFORM_Y);
     }
 }
