@@ -35,4 +35,8 @@ public class Doodle {
     public static void setY(double y_val) {
         _doodle.setY(y_val);
     }
+
+    public static boolean intersect_platform(double x, double y, double width, double height) {
+        return _doodle.intersects(x, y, width, height);
+    }
 }

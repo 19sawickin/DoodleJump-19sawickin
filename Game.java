@@ -12,6 +12,12 @@ import javafx.util.Duration;
 public class Game {
     private Doodle _doodle;
     private Platform _platform;
+    private int _midline;
+    private double _c_vel;
+    private double _new_vel;
+    private double _c_pos;
+    private double _new_pos;
+    private double _difference;
 
     public Game(BorderPane root, HBox _bottomPane, Pane doodlePane) {
         this.setupTimeline();
@@ -37,13 +43,16 @@ public class Game {
 
         public void handle(KeyEvent e) {
             _distance = Constants.DOODLE_DISTANCE;
-            double x_val = Doodle.getX() + _distance;
+            double x_val;
+
             switch(e.getCode()) {
-                case KP_LEFT:
+                case LEFT:
                     _distance *= -1;
+                    x_val = Doodle.getX() + _distance;
                     Doodle.setX(x_val);
                     break;
-                case KP_RIGHT:
+                case RIGHT:
+                    x_val = Doodle.getX() + _distance;
                     Doodle.setX(x_val);
                     break;
                 default:
@@ -54,29 +63,35 @@ public class Game {
     }
 
     private class MoveHandler implements EventHandler<ActionEvent> {
-        private double _c_vel = 0;
-        private double _new_vel = 0;
-        private double _c_pos;
-        private double _new_pos = 0;
-        private double _difference = 0;
+
+        public MoveHandler() {
+            _c_vel = 0;
+            _new_vel = 0;
+            _new_pos = 0;
+            _difference = 0;
+            _midline = Constants.MIDLINE;
+        }
 
         public void handle(ActionEvent kF) {
             _c_pos = Doodle.getY();
             _new_vel = _c_vel + Constants.GRAVITY * Constants.DURATION;
             _new_pos = _c_pos + _new_vel * Constants.DURATION;
 
-            if(_new_pos > Constants.SCENE_HEIGHT/2) {
+            if(_new_pos > _midline) {
                 Doodle.setY(_c_pos + _new_vel * Constants.DURATION);
-                _c_vel = _new_vel; //this screws things up
             } else {
-                _difference = Constants.SCENE_HEIGHT/2 - Doodle.getY();
+                _difference = _midline - _new_pos;
                 //move platforms down by difference
                 //remove off-screen platforms
                 //generate new platforms
-                Doodle.setY(Constants.SCENE_HEIGHT/2);
+                Doodle.setY(_midline);
             }
+            _c_vel = _new_vel;
+            this.bounce();
+        }
 
-            if(_c_pos>=0 && _doodle.intersects(Constants.PLATFORM_X, Constants.PLATFORM_Y,
+        public void bounce() {
+            if(_c_pos>=0 && Doodle.intersect_platform(Constants.PLATFORM_X, Constants.PLATFORM_Y,
                     Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
                 _c_vel = Constants.REBOUND_VELOCITY;
             }
