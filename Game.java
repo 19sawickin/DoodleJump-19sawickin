@@ -7,13 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class Game {
     private Doodle _doodle;
+    private Pane _doodlePane;
 
     private Platform _firstPlatform;
     private ArrayList<Platform> _platformList;
@@ -34,21 +34,20 @@ public class Game {
     public Game(BorderPane root, HBox _bottomPane, Pane doodlePane) {
         this.setupTimeline();
         _doodle = new Doodle(doodlePane);
+        _doodlePane = doodlePane;
 
-        new TimeHandler(); //wait do I need this???
-        root.setCenter(doodlePane);
+        root.setCenter(_doodlePane);
         root.setBottom(_bottomPane);
         doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
         doodlePane.setFocusTraversable(true);
         doodlePane.requestFocus();
 
         _platformList = new ArrayList<Platform>();
-        _firstPlatform = new Platform();
-        _firstPlatform.setX(Constants.PLATFORM_X); // IDK WHAT TO DO HERE
+        _firstPlatform = new Platform(_doodlePane);
+        _firstPlatform.setX(Constants.PLATFORM_X);
         _firstPlatform.setY(Constants.PLATFORM_Y);
         _topPlatform = _firstPlatform;
         _platformList.add(_topPlatform);
-        root.getChildren().add(_firstPlatform);
     }
 
     public void setupTimeline() {
@@ -103,8 +102,20 @@ public class Game {
             } else {
                 _difference = _midline - _newPos;
                 //move platforms down by difference
+                for(Platform _platform: _platformList) {
+                    _platform.setY(_platform.getY() + (int) _difference);
+
+                }
+                _doodle.setY(_midline);
                 //remove off-screen platforms
+//                for(Platform _platform: _platformList) {
+//                    if(_platform.getY() > Constants.SCENE_HEIGHT) {
+//                        _platformList.remove(_platform);
+//                        _doodlePane.getChildren().remove(_platform);
+//                    }
+//                }
                 //generate new platforms
+                this.generatePlatforms();
                 _doodle.setY(_midline); //
             }
             _cVel = _newVel;
@@ -112,9 +123,11 @@ public class Game {
         }
 
         public void bounce() {
-            if(_cPos >=0 && _doodle.intersect_platform(Constants.PLATFORM_X, Constants.PLATFORM_Y,
-                    Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
-                _cVel = Constants.REBOUND_VELOCITY;
+            for(Platform _platform: _platformList) {
+                if(_cPos >=0 && _doodle.intersect_platform(_platform.getX(), _platform.getY(),
+                        Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
+                    _cVel = Constants.REBOUND_VELOCITY;
+                }
             }
         }
 
@@ -123,22 +136,19 @@ public class Game {
                 _low = Math.max(0,_topPlatform.getX() - Constants.DOODLE_X_DISTANCE);
                 _high = Math.min(Constants.SCENE_WIDTH - Constants.PLATFORM_WIDTH,
                         _topPlatform.getX() + Constants.DOODLE_X_DISTANCE);
-                _randomX = Math.random(_low,_high)*10;
+                _randomX = _low + (int) ((_high-_low+1) * Math.random());
 
                 _low = _topPlatform.getY() - Constants.PLATFORM_HEIGHT;
                 _high = _topPlatform.getY() - Constants.DOODLE_Y_DISTANCE;
-                _randomY = Math.random(_low,_high)*10;
+                _randomY = _low + (int) ((_high-_low+1) * Math.random());
 
-                _newPlatform = new Platform();
-                _newPlatform.setX(_randomX);
-                _newPlatform.setY(_randomY);
+                _newPlatform = new Platform(_doodlePane);
+                _newPlatform.setX((int) _randomX);
+                _newPlatform.setY((int) _randomY);
 
                 _topPlatform = _newPlatform;
-                root.getChildren().add(_topPlatform);
-
+                //root.getChildren().add(_topPlatform);
             }
-
-
         }
 
     }

@@ -10,9 +10,14 @@ public class Platform {
     private Rectangle _platform;
     private Rectangle _firstPlatform;
 
-    public Platform() {
+    public Platform(Pane doodlePane) {
         _platform = new Rectangle(Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT);
         _platform.setFill(Color.GREEN);
+        doodlePane.getChildren().add(_platform);
+    }
+
+    public Rectangle getPlatform() {
+        return _platform;
     }
 
     public Rectangle getFirstPlatform() {
@@ -31,11 +36,11 @@ public class Platform {
         return (int) _platform.getY();
     }
 
-    public void setX() {
-        _platform.setX();
+    public void setX(int x) {
+        _platform.setX(x);
     }
 
-    public void setY() {
-        _platform.setY();
+    public void setY(int y) {
+        _platform.setY(y);
     }
 }
