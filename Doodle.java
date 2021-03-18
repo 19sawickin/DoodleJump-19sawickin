@@ -6,7 +6,7 @@ import javafx.scene.shape.*;
 
 
 public class Doodle {
-    private static Rectangle _doodle;
+    private Rectangle _doodle;
 
     public Doodle(Pane doodlePane) {
         this.setupShape();
@@ -20,23 +20,23 @@ public class Doodle {
         _doodle.setY(Constants.DOODLE_Y_LOC);
     }
 
-    public static double getX() {
+    public double getX() {
         return _doodle.getX();
     }
 
-    public static double getY() {
+    public double getY() {
         return _doodle.getY();
     }
 
-    public static void setX(double x_val) {
+    public void setX(double x_val) {
         _doodle.setX(x_val);
     }
 
-    public static void setY(double y_val) {
+    public void setY(double y_val) {
         _doodle.setY(y_val);
     }
 
-    public static boolean intersect_platform(double x, double y, double width, double height) {
+    public boolean intersect_platform(double x, double y, double width, double height) {
         return _doodle.intersects(x, y, width, height);
     }
 }

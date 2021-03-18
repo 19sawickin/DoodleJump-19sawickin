@@ -4,19 +4,38 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
+import java.util.ArrayList;
+
 public class Platform {
-    private static Rectangle _platform;
+    private Rectangle _platform;
+    private Rectangle _firstPlatform;
 
-    public Platform(BorderPane root) {
-        this.setupShape();
-        root.getChildren().add(_platform);
-
-    }
-
-    public void setupShape() {
+    public Platform() {
         _platform = new Rectangle(Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT);
         _platform.setFill(Color.GREEN);
-        _platform.setX(Constants.PLATFORM_X);
-        _platform.setY(Constants.PLATFORM_Y);
+    }
+
+    public Rectangle getFirstPlatform() {
+        _firstPlatform = new Rectangle(Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT);
+        _firstPlatform.setFill(Color.GREEN);
+        _firstPlatform.setX(Constants.PLATFORM_X);
+        _firstPlatform.setY(Constants.PLATFORM_Y);
+        return _firstPlatform;
+    }
+
+    public int getX() {
+        return (int) _platform.getX();
+    }
+
+    public int getY() {
+        return (int) _platform.getY();
+    }
+
+    public void setX() {
+        _platform.setX();
+    }
+
+    public void setY() {
+        _platform.setY();
     }
 }
