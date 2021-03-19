@@ -38,17 +38,3 @@ public class PaneOrganizer {
     }
 
 }
-
-/**
- * private void scroll() {
- *      if doodle Y position < panel height/2
- *          difference = panel height/2 - doodle's Y
- *          for platform in ArrayList platforms:
- *              set platform's loc to be platform x, platform y + difference
- *          set doodle's location to be doodle x, panel height/2
- *
- *
- * }
- *
- *
- **/

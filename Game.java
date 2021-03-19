@@ -41,7 +41,7 @@ public class Game {
         _root = root;
 
         root.setCenter(_doodlePane);
-        root.setBottom(_bottomPane); //move to pane organizer class
+        root.setBottom(_bottomPane);
         doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
         doodlePane.setFocusTraversable(true);
         doodlePane.requestFocus();
@@ -105,21 +105,20 @@ public class Game {
         }
 
         public void handle(ActionEvent kF) {
-            while(_doodle.getY() < Constants.SCENE_HEIGHT) {
-                _cPos = _doodle.getY();
-                _newVel = _cVel + Constants.GRAVITY * Constants.DURATION;
-                _newPos = _cPos + _newVel * Constants.DURATION;
-                _doodle.setY(_newPos);
-                this.movePlatforms();
-                this.removePlatforms();
-                this.generatePlatforms();
-                _cVel = _newVel;
-                this.bounce();
+            if(_doodle.getY() > Constants.SCENE_HEIGHT) {
+                _timeline.stop();
+                _doodlePane.getChildren().add(new Label("GAME OVER"));
+                _doodlePane.setOnKeyPressed(null);
             }
-            _timeline.stop();
-            _root.getChildren().add(new Label("GAME OVER"));
-            _root.setOnKeyPressed(null);
-            System.out.println("Game Over");
+            _cPos = _doodle.getY();
+            _newVel = _cVel + Constants.GRAVITY * Constants.DURATION;
+            _newPos = _cPos + _newVel * Constants.DURATION;
+            _doodle.setY(_newPos);
+            this.movePlatforms();
+            this.removePlatforms();
+            this.generatePlatforms();
+            _cVel = _newVel;
+            this.bounce();
         }
 
         public void bounce() {
@@ -153,13 +152,13 @@ public class Game {
 
         public void generatePlatforms() {
             while(_topPlatform.getY() > 0) {
-                _low = Math.max(0,_topPlatform.getX() - Constants.X_OFFSET); //DOODLE_X_DISTANCE
+                _low = Math.max(0,_topPlatform.getX() - Constants.X_OFFSET);
                 _high = Math.min(Constants.SCENE_WIDTH - Constants.PLATFORM_WIDTH,
                         _topPlatform.getX() + Constants.X_OFFSET);
                 _randomX = _low + (int) ((_high-_low+1) * Math.random());
 
-                _low = _topPlatform.getY() - Constants.Y_OFFSET_MIN; //PLATFORM_HEIGHT
-                _high = _topPlatform.getY() - Constants.Y_OFFSET_MAX; //DOODLE_Y_DISTANCE
+                _low = _topPlatform.getY() - Constants.Y_OFFSET_MIN;
+                _high = _topPlatform.getY() - Constants.Y_OFFSET_MAX;
                 _randomY = _low + (int) ((_high-_low+1) * Math.random());
 
                 _newPlatform = new Platform(_doodlePane);
