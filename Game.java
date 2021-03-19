@@ -93,30 +93,32 @@ public class Game {
         }
 
         public void handle(ActionEvent kF) {
-            _cPos = _doodle.getY(); //
+            _cPos = _doodle.getY();
             _newVel = _cVel + Constants.GRAVITY * Constants.DURATION;
             _newPos = _cPos + _newVel * Constants.DURATION;
 
             if(_newPos > _midline) {
-                _doodle.setY(_cPos + _newVel * Constants.DURATION); //
+                _doodle.setY(_newPos + _newVel * Constants.DURATION);
             } else {
-                _difference = _midline - _newPos;
+                _difference = _midline - _cPos;
+
                 //move platforms down by difference
                 for(Platform _platform: _platformList) {
                     _platform.setY(_platform.getY() + (int) _difference);
 
                 }
                 _doodle.setY(_midline);
+
                 //remove off-screen platforms
 //                for(Platform _platform: _platformList) {
 //                    if(_platform.getY() > Constants.SCENE_HEIGHT) {
-//                        _platformList.remove(_platform);
 //                        _doodlePane.getChildren().remove(_platform);
+//                        _platformList.remove(_platform);
 //                    }
 //                }
+
                 //generate new platforms
                 this.generatePlatforms();
-                _doodle.setY(_midline); //
             }
             _cVel = _newVel;
             this.bounce();
@@ -124,7 +126,7 @@ public class Game {
 
         public void bounce() {
             for(Platform _platform: _platformList) {
-                if(_cPos >=0 && _doodle.intersect_platform(_platform.getX(), _platform.getY(),
+                if(_cVel >=0 && _doodle.intersect_platform(_platform.getX(), _platform.getY(),
                         Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
                     _cVel = Constants.REBOUND_VELOCITY;
                 }
@@ -147,7 +149,6 @@ public class Game {
                 _newPlatform.setY((int) _randomY);
 
                 _topPlatform = _newPlatform;
-                //root.getChildren().add(_topPlatform);
             }
         }
 
