@@ -39,4 +39,8 @@ public class Constants {
     public static final int DOODLE_X_DISTANCE = 20;
     public static final int DOODLE_Y_DISTANCE = 100;
 
+    public static final int X_OFFSET = 200;
+    public static final int Y_OFFSET_MIN = PLATFORM_HEIGHT + 10;
+    public static final int Y_OFFSET_MAX = 100;
+
 }

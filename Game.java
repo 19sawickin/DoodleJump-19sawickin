@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 public class Game {
     private Doodle _doodle;
     private Pane _doodlePane;
+    private Timeline _timeline;
+    private BorderPane _root;
 
     private Platform _firstPlatform;
     private ArrayList<Platform> _platformList;
@@ -35,6 +38,7 @@ public class Game {
         this.setupTimeline();
         _doodle = new Doodle(doodlePane);
         _doodlePane = doodlePane;
+        _root = root;
 
         root.setCenter(_doodlePane);
         root.setBottom(_bottomPane); //move to pane organizer class
@@ -51,29 +55,36 @@ public class Game {
     }
 
     public void setupTimeline() {
-        Timeline timeline = new Timeline
+        _timeline = new Timeline
                 (new KeyFrame(Duration.seconds(Constants.DURATION), new TimeHandler()));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
+        _timeline.setCycleCount(Animation.INDEFINITE);
+        _timeline.play();
     }
 
     private class KeyHandler implements EventHandler<KeyEvent> {
         private double _distance;
 
         public void handle(KeyEvent e) {
-            //System.out.println(_doodle.getX());
             _distance = Constants.DOODLE_X_DISTANCE;
             double x_val;
 
             switch(e.getCode()) {
                 case LEFT:
                     _distance *= -1;
-                    x_val = _doodle.getX() + _distance; //
-                    _doodle.setX(x_val); //
+                    if(_doodle.getX() > 0){
+                        x_val = _doodle.getX() + _distance;
+                    } else {
+                        x_val = Constants.SCENE_WIDTH + _distance;
+                    }
+                    _doodle.setX(x_val);
                     break;
                 case RIGHT:
-                    x_val = _doodle.getX() + _distance; //
-                    _doodle.setX(x_val); //
+                    if(_doodle.getX() < Constants.SCENE_WIDTH) {
+                        x_val = _doodle.getX() + _distance;
+                    } else {
+                        x_val = _distance;
+                    }
+                    _doodle.setX(x_val);
                     break;
                 default:
                     break;
@@ -94,18 +105,21 @@ public class Game {
         }
 
         public void handle(ActionEvent kF) {
-            _cPos = _doodle.getY();
-            _newVel = _cVel + Constants.GRAVITY * Constants.DURATION;
-            _newPos = _cPos + _newVel * Constants.DURATION;
-            _doodle.setY(_newPos);//+ _newVel * Constants.DURATION
-            //move platforms down by difference
-            this.movePlatforms();
-            //remove off-screen platforms
-            this.removePlatforms();
-            //generate new platforms
-            this.generatePlatforms();
-            _cVel = _newVel;
-            this.bounce();
+            while(_doodle.getY() < Constants.SCENE_HEIGHT) {
+                _cPos = _doodle.getY();
+                _newVel = _cVel + Constants.GRAVITY * Constants.DURATION;
+                _newPos = _cPos + _newVel * Constants.DURATION;
+                _doodle.setY(_newPos);
+                this.movePlatforms();
+                this.removePlatforms();
+                this.generatePlatforms();
+                _cVel = _newVel;
+                this.bounce();
+            }
+            _timeline.stop();
+            _root.getChildren().add(new Label("GAME OVER"));
+            _root.setOnKeyPressed(null);
+            System.out.println("Game Over");
         }
 
         public void bounce() {
@@ -113,7 +127,6 @@ public class Game {
                 if(_cVel >=0 && _doodle.intersect_platform(_platform.getX(), _platform.getY(),
                         Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
                     _cVel = Constants.REBOUND_VELOCITY;
-                    System.out.println("bounce");
                 }
             }
         }
@@ -140,13 +153,13 @@ public class Game {
 
         public void generatePlatforms() {
             while(_topPlatform.getY() > 0) {
-                _low = Math.max(0,_topPlatform.getX() - Constants.DOODLE_X_DISTANCE);
+                _low = Math.max(0,_topPlatform.getX() - Constants.X_OFFSET); //DOODLE_X_DISTANCE
                 _high = Math.min(Constants.SCENE_WIDTH - Constants.PLATFORM_WIDTH,
-                        _topPlatform.getX() + Constants.DOODLE_X_DISTANCE);
+                        _topPlatform.getX() + Constants.X_OFFSET);
                 _randomX = _low + (int) ((_high-_low+1) * Math.random());
 
-                _low = _topPlatform.getY() - Constants.PLATFORM_HEIGHT;
-                _high = _topPlatform.getY() - Constants.DOODLE_Y_DISTANCE;
+                _low = _topPlatform.getY() - Constants.Y_OFFSET_MIN; //PLATFORM_HEIGHT
+                _high = _topPlatform.getY() - Constants.Y_OFFSET_MAX; //DOODLE_Y_DISTANCE
                 _randomY = _low + (int) ((_high-_low+1) * Math.random());
 
                 _newPlatform = new Platform(_doodlePane);
@@ -157,6 +170,5 @@ public class Game {
                 _topPlatform = _newPlatform;
             }
         }
-
     }
 }

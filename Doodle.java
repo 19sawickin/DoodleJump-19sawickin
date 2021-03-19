@@ -16,7 +16,7 @@ public class Doodle {
     public void setupShape() {
         _doodle = new Rectangle(Constants.DOODLE_WIDTH, Constants.DOODLE_HEIGHT);
         _doodle.setFill(Color.BLUE);
-        _doodle.setX(Constants.SCENE_WIDTH/2);
+        _doodle.setX(Constants.DOODLE_X_LOC); //SCENE_WIDTH/2
         _doodle.setY(Constants.DOODLE_Y_LOC);
     }
 
