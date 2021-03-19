@@ -36,7 +36,7 @@ public class Constants {
     public static final int PLATFORM_X = SCENE_WIDTH/2 + PLATFORM_WIDTH/2;
     public static final int PLATFORM_Y = SCENE_HEIGHT - PLATFORM_HEIGHT;
 
-    public static final int DOODLE_X_DISTANCE = 200;
+    public static final int DOODLE_X_DISTANCE = 20;
     public static final int DOODLE_Y_DISTANCE = 100;
 
 }

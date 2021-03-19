@@ -37,7 +37,7 @@ public class Game {
         _doodlePane = doodlePane;
 
         root.setCenter(_doodlePane);
-        root.setBottom(_bottomPane);
+        root.setBottom(_bottomPane); //move to pane organizer class
         doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
         doodlePane.setFocusTraversable(true);
         doodlePane.requestFocus();
@@ -61,6 +61,7 @@ public class Game {
         private double _distance;
 
         public void handle(KeyEvent e) {
+            //System.out.println(_doodle.getX());
             _distance = Constants.DOODLE_X_DISTANCE;
             double x_val;
 
@@ -96,30 +97,13 @@ public class Game {
             _cPos = _doodle.getY();
             _newVel = _cVel + Constants.GRAVITY * Constants.DURATION;
             _newPos = _cPos + _newVel * Constants.DURATION;
-
-            if(_newPos > _midline) {
-                _doodle.setY(_newPos + _newVel * Constants.DURATION);
-            } else {
-                _difference = _midline - _cPos;
-
-                //move platforms down by difference
-                for(Platform _platform: _platformList) {
-                    _platform.setY(_platform.getY() + (int) _difference);
-
-                }
-                _doodle.setY(_midline);
-
-                //remove off-screen platforms
-//                for(Platform _platform: _platformList) {
-//                    if(_platform.getY() > Constants.SCENE_HEIGHT) {
-//                        _doodlePane.getChildren().remove(_platform);
-//                        _platformList.remove(_platform);
-//                    }
-//                }
-
-                //generate new platforms
-                this.generatePlatforms();
-            }
+            _doodle.setY(_newPos);//+ _newVel * Constants.DURATION
+            //move platforms down by difference
+            this.movePlatforms();
+            //remove off-screen platforms
+            this.removePlatforms();
+            //generate new platforms
+            this.generatePlatforms();
             _cVel = _newVel;
             this.bounce();
         }
@@ -129,7 +113,28 @@ public class Game {
                 if(_cVel >=0 && _doodle.intersect_platform(_platform.getX(), _platform.getY(),
                         Constants.PLATFORM_WIDTH, Constants.PLATFORM_HEIGHT )) {
                     _cVel = Constants.REBOUND_VELOCITY;
+                    System.out.println("bounce");
                 }
+            }
+        }
+
+        public void removePlatforms() { //
+            for(int i=0; i<_platformList.size(); i++) {
+                if (_platformList.get(i).getY() > Constants.SCENE_HEIGHT) {
+                    _doodlePane.getChildren().remove(_platformList.get(i).getPlatform());
+                    _platformList.remove(_platformList.get(i));
+                    i--;
+                }
+            }
+        }
+
+        public void movePlatforms() {
+            if(_doodle.getY() < _midline) {
+                _difference = _midline - _doodle.getY();
+                for(Platform _platform: _platformList) {
+                    _platform.setY(_platform.getY() + (int) _difference);
+                }
+                _doodle.setY(_midline);
             }
         }
 
@@ -147,6 +152,7 @@ public class Game {
                 _newPlatform = new Platform(_doodlePane);
                 _newPlatform.setX((int) _randomX);
                 _newPlatform.setY((int) _randomY);
+                _platformList.add(_newPlatform);
 
                 _topPlatform = _newPlatform;
             }
