@@ -1,0 +1,23 @@
+doodlejump README
+
+HANDIN:
+Final handin
+
+
+DESIGN CHOICES:
+The top-most class is the App class, which contains an instance of the pane organizer class
+which contains an instance of the game class, which contains an instance of the doodle class
+and multiple instances of the platform class.
+
+The doodle and all of the platforms are graphically added to the doodlePane which is added to the
+root pane. A timehandler is used to control movement of the doodle and platforms, so every .016
+seconds, it updates and checks to see if the doodle is falling, if it's intersected a platform,
+and where its current position is. Based on these factors, the doodle and platforms adjust
+accordingly.
+
+
+KNOWN BUGS:
+No known bugs.
+
+HOURS SPENT:
+20

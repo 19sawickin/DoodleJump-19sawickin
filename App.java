@@ -5,18 +5,18 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * This is the main class where your DoodleJump game will start.
+ * This is the main class in charge of starting the game.
  * The main method of this application calls launch, a JavaFX method
- * which eventually calls the start method below. You will need to fill
- * in the start method to start your game!
- *
- * Class comments here...
+ * which eventually calls the start method below.
  */
 public class App extends Application {
 
+    /**
+     * The start method is responsible for constructing the stage and the PaneOrganizer
+     * that contains all of the panes. This starts the game.
+     */
     @Override
     public void start(Stage stage) {
-        // Instantiate top-level object, set up the scene, and show the stage here.
         PaneOrganizer organizer = new PaneOrganizer();
         Scene scene = new Scene(organizer.getRoot(),Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
         stage.setScene(scene);
@@ -24,11 +24,7 @@ public class App extends Application {
         stage.show();
     }
 
-    /*
-     * Here is the mainline! No need to change this.
-     */
     public static void main(String[] argv) {
-        // launch is a static method inherited from Application.
         launch(argv);
     }
 }
