@@ -45,22 +45,22 @@ public class Game {
      * and stores it in the array list.
      */
     public Game(BorderPane root, HBox _bottomPane, Pane doodlePane) {
-//        this.setupTimeline();
-//        _doodle = new Doodle(doodlePane);
-//        _doodlePane = doodlePane;
-//        _root = root;
-//        root.setCenter(_doodlePane);
-//        root.setBottom(_bottomPane);
-//        doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
-//        doodlePane.setFocusTraversable(true);
-//        doodlePane.requestFocus();
-//        // code below sets up first platform and array list
-//        _platformList = new ArrayList<Platform>();
-//        _firstPlatform = new Platform(_doodlePane);
-//        _firstPlatform.setX(Constants.PLATFORM_X);
-//        _firstPlatform.setY(Constants.PLATFORM_Y);
-//        _topPlatform = _firstPlatform;
-//        _platformList.add(_topPlatform);
+        this.setupTimeline();
+        _doodle = new Doodle(doodlePane);
+        _doodlePane = doodlePane;
+        _root = root;
+        root.setCenter(_doodlePane);
+        root.setBottom(_bottomPane);
+        doodlePane.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
+        doodlePane.setFocusTraversable(true);
+        doodlePane.requestFocus();
+        // code below sets up first platform and array list
+        _platformList = new ArrayList<Platform>();
+        _firstPlatform = new Platform(_doodlePane);
+        _firstPlatform.setX(Constants.PLATFORM_X);
+        _firstPlatform.setY(Constants.PLATFORM_Y);
+        _topPlatform = _firstPlatform;
+        _platformList.add(_topPlatform);
     }
 
     /**
